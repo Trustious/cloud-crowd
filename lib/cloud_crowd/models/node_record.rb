@@ -91,12 +91,12 @@ module CloudCrowd
     end
 
     # The JSON representation of a NodeRecord includes its worker_pids.
-    def to_json(opts={})
+    def as_json(opts={})
       { 'host'    => host,
         'workers' => worker_pids,
         'status'  => display_status,
         'tag'     => tag
-      }.to_json
+      }
     end
 
 
