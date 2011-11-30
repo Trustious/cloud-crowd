@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name      = 'cloud-crowd'
-  s.version   = '0.6.4'         # Keep version in sync with cloud-cloud.rb
+  s.version   = '0.6.5'         # Keep version in sync with cloud-cloud.rb
   s.date      = '2011-11-28'
 
   s.homepage    = "http://wiki.github.com/documentcloud/cloud-crowd"
