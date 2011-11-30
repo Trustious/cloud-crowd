@@ -66,7 +66,7 @@ module CloudCrowd
     # The URL at which this Node may be reached.
     # TODO: Make sure that the host actually has externally accessible DNS.
     def url
-      @url ||= "http://#{host}"
+      @url ||= "http://#{ip_address}:#{port}"
     end
 
     # Keep a RestClient::Resource handy for contacting the Node, including
