@@ -45,10 +45,23 @@ module CloudCrowd
       if url.match(FILE_URL)
         FileUtils.cp(url.sub(FILE_URL, ''), path)
       else
+        uri = URI(url)
         File.open(path, 'w+') do |file|
-          Net::HTTP.get_response(URI(url)) do |response|
-            response.read_body do |chunk|
-              file.write chunk
+          if uri.scheme == 'https'
+            http = Net::HTTP.new(uri.host, uri.port)
+            http.use_ssl = true
+            http.start do |h|
+              req = Net::HTTP::Get.new(uri.path)
+              response = h.request(req)
+              response.read_body do |chunk|
+                file.write chunk
+              end
+            end
+          else
+            Net::HTTP.get_response(uri) do |response|
+              response.read_body do |chunk|
+                file.write chunk
+              end
             end
           end
         end

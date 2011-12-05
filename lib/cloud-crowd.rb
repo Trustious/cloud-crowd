@@ -27,6 +27,7 @@ autoload :YAML,         'yaml'
 # Common code which should really be required in every circumstance.
 require 'socket'
 require 'net/http'
+require 'net/https'
 require 'cloud_crowd/exceptions'
 
 #require 'logger'
@@ -48,7 +49,7 @@ module CloudCrowd
   autoload :WorkUnit,     'cloud_crowd/models'
 
   # Keep this version in sync with the gemspec.
-  VERSION        = '0.6.5'
+  VERSION        = '0.6.6'
 
   # Increment the schema version when there's a backwards incompatible change.
   SCHEMA_VERSION = 4
