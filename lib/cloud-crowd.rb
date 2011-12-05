@@ -27,7 +27,7 @@ autoload :YAML,         'yaml'
 # Common code which should really be required in every circumstance.
 require 'socket'
 require 'net/http'
-require 'net/https'
+require 'open-uri'
 require 'cloud_crowd/exceptions'
 
 #require 'logger'

@@ -48,15 +48,7 @@ module CloudCrowd
         uri = URI(url)
         File.open(path, 'w+') do |file|
           if uri.scheme == 'https'
-            http = Net::HTTP.new(uri.host, uri.port)
-            http.use_ssl = true
-            http.start do |h|
-              req = Net::HTTP::Get.new(uri.path)
-              response = h.request(req)
-              response.read_body do |chunk|
-                file.write chunk
-              end
-            end
+            file.write open(url).read
           else
             Net::HTTP.get_response(uri) do |response|
               response.read_body do |chunk|
