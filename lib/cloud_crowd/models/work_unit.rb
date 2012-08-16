@@ -79,7 +79,7 @@ module CloudCrowd
     # Reserves all available WorkUnits for this process. Returns false if there
     # were none available.
     def self.reserve_available(options={})
-      reservation = ActiveSupport::SecureRandom.random_number(MAX_RESERVATION)
+      reservation = SecureRandom.random_number(MAX_RESERVATION)
       conditions = "reservation is null and node_record_id is null and status in (#{INCOMPLETE.join(',')}) and #{options[:conditions]}"
       any = WorkUnit.update_all("reservation = #{reservation}", conditions, options) > 0
       any && reservation
