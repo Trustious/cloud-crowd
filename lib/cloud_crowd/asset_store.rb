@@ -13,6 +13,7 @@ module CloudCrowd
   class AssetStore
 
     autoload :S3Store,         'cloud_crowd/asset_store/s3_store'
+    autoload :S3FogStore,      'cloud_crowd/asset_store/s3_fog_store'
     autoload :FilesystemStore, 'cloud_crowd/asset_store/filesystem_store'
     autoload :CloudfilesStore, 'cloud_crowd/asset_store/cloudfiles_store'
 
@@ -21,6 +22,7 @@ module CloudCrowd
     case CloudCrowd.config[:storage]
     when 'filesystem' then include FilesystemStore
     when 's3'         then include S3Store
+    when 's3_fog'     then include S3FogStore
     when 'cloudfiles' then include CloudfilesStore
     else raise Error::StorageNotFound, "#{CloudCrowd.config[:storage]} is not a valid storage back end"
     end
