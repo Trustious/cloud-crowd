@@ -26,6 +26,8 @@ module CloudCrowd
 
     # The interval at which the node regularly checks in with central (5 min).
     CHECK_IN_INTERVAL   = 300
+    # The interval at which the node tries to check in if the last check in failed
+    EAGER_CHECK_IN_INTERVAL = 5
 
     # The response sent back when this node is overloaded.
     OVERLOADED_MESSAGE  = 'Node Overloaded'
@@ -74,6 +76,7 @@ module CloudCrowd
       @daemon           = !!options[:daemonize]
       @tag              = options[:tag]
       @overloaded       = false
+      @last_check_in    = false
       @max_load         = CloudCrowd.config[:max_load]
       @min_memory       = CloudCrowd.config[:min_free_memory]
       start unless test?
@@ -107,8 +110,10 @@ module CloudCrowd
         :max_workers      => CloudCrowd.config[:max_workers],
         :enabled_actions  => @enabled_actions.join(',')
       )
+      @last_check_in = true
     rescue RestClient::Exception, Errno::ECONNREFUSED
       puts "Failed to connect to the central server (#{@central.to_s})."
+      @last_check_in = false
       raise SystemExit if critical
     end
 
@@ -173,7 +178,7 @@ module CloudCrowd
     def check_in_periodically
       @check_in_thread = Thread.new do
         loop do
-          sleep CHECK_IN_INTERVAL
+          sleep @last_check_in ? CHECK_IN_INTERVAL : EAGER_CHECK_IN_INTERVAL
           check_in
         end
       end
