@@ -110,11 +110,16 @@ module CloudCrowd
         :max_workers      => CloudCrowd.config[:max_workers],
         :enabled_actions  => @enabled_actions.join(',')
       )
+      unless @last_check_in
+        puts "Successfully checked in with the central server (#{central.to_s})"
+      end
       @last_check_in = true
     rescue RestClient::Exception, Errno::ECONNREFUSED
       puts "Failed to connect to the central server (#{@central.to_s})."
       @last_check_in = false
-      raise SystemExit if critical
+      #raise SystemExit if critical
+      sleep EAGER_CHECK_IN_INTERVAL
+      retry
     end
 
     # Before exiting, the Node checks out with the central server, releasing all
