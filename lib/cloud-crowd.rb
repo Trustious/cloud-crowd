@@ -165,7 +165,8 @@ module CloudCrowd
     # Actions, then install only those into the actions directory.
     def actions
       # Load the bootstrap file
-      require File.expand_path(File.join(Dir.pwd, 'application')) if File::exists?('application.rb') && self.node?
+      application_file = File.expand_path(File.join(@config_path, 'application.rb'))
+      require application_file if File::exists?(application_file) && self.node?
       
       return @actions if @actions
       @actions = action_paths.inject({}) do |memo, path|
