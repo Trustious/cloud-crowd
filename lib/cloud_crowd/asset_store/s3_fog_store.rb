@@ -1,4 +1,7 @@
 gem 'fog'
+require 'rubygems'
+require 'fog'
+
 
 module CloudCrowd
   class AssetStore
@@ -15,7 +18,7 @@ module CloudCrowd
         key, secret = CloudCrowd.config[:aws_access_key], CloudCrowd.config[:aws_secret_key]
         valid_conf  = [bucket_name, key, secret].all? {|s| s.is_a? String }
         raise Error::MissingConfiguration, "An S3 account must be configured in 'config.yml' before 's3_fog' storage can be used" unless valid_conf
-        @s3         = Fog::Storage.new(:provider => "AWS",
+        @s3         = ::Fog::Storage.new(:provider => "AWS",
                                         :aws_access_key_id => key, :aws_secret_access_key => secret)
         @bucket     = @s3.directories.get(bucket_name)
         @bucket     = @s3.directories.create(:key => bucket_name, :public => false) unless @bucket
